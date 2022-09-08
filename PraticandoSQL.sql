@@ -133,3 +133,12 @@ select top 10 ProductID, sum(LineTotal)  AS'Total' from Sales.SalesOrderDetail g
 --  Quero saber quais nomes no sistema tem uma ocorrencia de maior que 10 vezes, porém somente onde o título é "Mr"
 select FirstName, COUNT(FirstName) from person.Person where Title ='Mr.' group by FirstName having COUNT(FirstName) > 10 ;
 select *from person.person;
+
+-- ( 1 )Estamos querendo identificar as provincias (stateProvincedID) com o maior numero de cadastros no nosso sistema, então é preciso encontrar quais
+--provincias (stateProvinced ) estão registradas no banco de dados mais de 1000 vezes
+select * from person.Address;
+select StateProvinceID, COUNT(StateProvinceID)AS'Quanidade' from person.Address group by StateProvinceID having COUNT(StateProvinceID)>1000;
+
+--( 2 )Quero saber quais os produtos (productid) não estao trazendo media minima de 1 milhão em total de vendas(linetotal)
+select*from Sales.SalesOrderDetail;
+
