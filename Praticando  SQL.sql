@@ -82,8 +82,54 @@ select COUNT(*) from Production.Product where Color = 'red' and ListPrice betwee
 select COUNT(*) from Production.Product where Name like '%road%';
 
 -- ##################  MIN - MAX - SUM E AVG ####################
---Funções de agregação  vasicamente agregam ou combinan dados de uma tabela em 1 resultado só.
+--Funções de agregação  basicamente agregam ou combinan dados de uma tabela em 1 resultado só.
 
+-- Somando o valor total dos valores de uma tabela, SUM é a soma do que você selecionar
+select SUM(linetotal) as 'Soma Total' from Sales.SalesOrderDetail;
 
+ -- Qual  menor valor da tabela Sales 
+ select min(LineTotal) as 'Valor Minimo' from Sales.SalesOrderDetail;
 
+ -- Qual a média do valor total das tabelas, utilize AVG
+ select AVG(LineTotal) AS 'Média' from sales.SalesOrderDetail;
 
+ -- ########### Group by #################
+ --Divide o resultado da sua pesquisa em grupos.
+
+ --Exemplo agrupando pelo ID.
+ select SpecialOfferID, SUM(UnitPrice)  from sales.SalesOrderDetail group by SpecialOfferID;
+
+ -- Vamos dizer que eu quero saber quantos de cada produto foi vendido até hoje.
+ select ProductID, COUNT(ProductID) from Sales.SalesOrderDetail group by ProductID;
+
+ --Quero saber quantos nomes de cada nomes temos no banco de dados
+ select FirstName, COUNT(FirstName) as 'Quantidade de Cada Nome' from Person.Person group by FirstName order by FirstName asc ;
+
+ --Na tabela de produtos eu quero saber a media de preço  para os produtos que são pratas (silver)
+ select Color, AVG(ListPrice) from Production.Product where color ='silver' group by Color;
+
+ --( 1 )Quero saber quantas pessoas tem o mesmo middlename (nome do meio ) e agrupe pelo middlename
+ select MiddleName, COUNT(MiddleName) AS 'Quantidade de Pessoas nome do meio' from Person.Person group by MiddleName;
+
+ --( 2 ) Eu preciso saber a média e qual é a quantidade (qantity orderQTY) que cada produto é vendido na loja.
+ select ProductID, AVG(OrderQty) AS 'Média' from Sales.SalesOrderDetail group by ProductID;
+  
+ --( 3 ) Quero saber quais foram as 10 vendas que no total tiveram os maiores valores de vendas 
+ --(linetotal) por produto do maior valor para o menor
+select top 10 ProductID, SUM(LineTotal) AS 'Valor total' from sales.SalesOrderDetail group by ProductID order by SUM(LineTotal) desc;
+
+--( 4 ) Quantos produtos e qual a media de produtos temos cadastrados nas ordens de serviços (workOrder), agrupados por produtcID
+select ProductID, COUNT(ProductID) as 'Estoque', AVG(OrderQty) AS 'média' from Production.WorkOrder group by ProductID order by ProductID;
+
+--################################  HAVING ##########################
+-- Normalmente é usado junto com grupo by
+
+select FirstName, COUNT(FirstName) as 'Quantidade' from Person.Person
+group by FirstName having COUNT(FirstName) > 10 and COUNT(FirstName)< 30 ;
+
+-- Queremos saber quais pordutos que no total de vendas estão entre 162 a 500k
+select top 10 ProductID, sum(LineTotal)  AS'Total' from Sales.SalesOrderDetail group by ProductID having sum(LineTotal) between 162000 and 500000;
+
+--  Quero saber quais nomes no sistema tem uma ocorrencia de maior que 10 vezes, porém somente onde o título é "Mr"
+select FirstName, COUNT(FirstName) from person.Person where Title ='Mr.' group by FirstName having COUNT(FirstName) > 10 ;
+select *from person.person;
