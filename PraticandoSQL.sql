@@ -142,3 +142,33 @@ select StateProvinceID, COUNT(StateProvinceID)AS'Quanidade' from person.Address 
 --( 2 )Quero saber quais os produtos (productid) não estao trazendo media minima de 1 milhão em total de vendas(linetotal)
 select*from Sales.SalesOrderDetail;
 
+-- ( 2 ) Gerentes querem saber quais produtos product não estao trazendo a média no minimo 1 milhão em total de vendas
+select count(ProductID) AS 'QTD-Produtos', AVG(LineTotal)  from Sales.SalesOrderDetail group by ProductID  having AVG(LineTotal)< 1000000; 
+
+--######################### INNER JOIN  ###########################
+
+SELECT P.BusinessEntityID, P.FirstName, P.LastName, e.EmailAddress
+FROM Person.Person as p
+INNER JOIN Person.EmailAddress e on P.businessEntityID = e.BusinessEntityID;
+
+--Quero  dos produtos e as informações (nome) da categoria e subcategorias
+select p.ProductID, p.Name as 'Nome do Produto',p.ListPrice as 'Preço de venda', 
+pc.Name as 'Nome Categoria', sub.Name as 'Nome SubCategoria'  
+from Production.Product as p
+inner join Production.ProductSubcategory sub on p.ProductSubcategoryID = sub.ProductSubcategoryID
+inner join Production.ProductCategory pc on sub.ProductCategoryID = pc.ProductCategoryID
+
+-- Traga traga das tabelas phonenumber e personphone os campos bussinesentiid name phone id e fone number,
+select PT.PhoneNumberTypeID,PT.Name,PP.PhoneNumber from Person.PhoneNumberType as PT 
+inner join person.PersonPhone PP on PT.PhoneNumberTypeID = pp.PhoneNumberTypeID;
+
+
+
+select top 3* from Person.PhoneNumberType;
+select top 3* from person.PersonPhone;
+select top 3* from Person.AddressType;
+
+SELECT COLUMN_NAME,TABLE_NAME,TABLE_SCHEMA
+FROM information_schema.KEY_COLUMN_USAGE;
+
+
